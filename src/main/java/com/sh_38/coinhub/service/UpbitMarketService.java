@@ -11,6 +11,11 @@ public class UpbitMarketService implements MarketService{
 
     @Override
     public double getCoinCurrentPrice(String coin) {
-        return 123.2222;
+        // coin은 대소문자 구분이 안되기 때문에 대문자로 만들어줌
+        return upbitFeignClient.getCoinPrice("KRW-" + coin.toUpperCase())
+                .get(0)
+                .getTrade_price();
+
+
     }
 }

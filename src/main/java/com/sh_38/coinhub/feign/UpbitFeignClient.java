@@ -10,7 +10,5 @@ import java.util.List;
 @FeignClient(name = "upbit", url = "https://api.upbit.com/v1")
 public interface UpbitFeignClient {
     @GetMapping("/ticker")
-    List<UpbitCoinPrice> getCoinPrice(@RequestParam("markets") String coin)
-
-
+    List<UpbitCoinPrice> getCoinPrice(@RequestParam("markets") String coin);
 }

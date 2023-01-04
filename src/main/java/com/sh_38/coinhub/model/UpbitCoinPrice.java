@@ -1,6 +1,8 @@
 package com.sh_38.coinhub.model;
 
-public class UpbitCoinPrice {
+import lombok.Getter;
 
+@Getter
+public class UpbitCoinPrice{
     private double trade_price;
 }
