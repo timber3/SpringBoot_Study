@@ -1,5 +1,6 @@
 package com.sh_38.coinhub.view;
 
+import com.sh_38.coinhub.dto.TransferCalculateDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,4 +13,14 @@ public class TransferCalculateResponseView {
     private double amount;
     private Map<Double, Double> buyOrderBook;
     private Map<Double, Double> sellOrderBook;
+
+    // DTO를 View 로 전환해주는 작업
+    public static TransferCalculateResponseView of(TransferCalculateDTO dto){
+        return new TransferCalculateResponseView(
+                dto.getCoin(),
+                dto.getAmount(),
+                dto.getBuyOrderBook(),
+                dto.getSellOrderBook()
+        )
+    }
 }
