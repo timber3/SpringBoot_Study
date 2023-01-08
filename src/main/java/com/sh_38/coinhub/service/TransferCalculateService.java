@@ -18,7 +18,7 @@ public class TransferCalculateService {
             String fromMarket, String toMarket, Double amount
     )
     {
-        // from 과 to 의 common coin 찾기
+/*        // from 과 to 의 common coin 찾기
         List<String> commonCoins = commonMarketService.getCommonCoin(fromMarket, toMarket);
 
         MarketService fromMarketService = CommonMarketService.getCommonCoins(marketServices, fromMarket);
@@ -40,9 +40,10 @@ public class TransferCalculateService {
         // TODO: 가장 많은 현금 선택
 
         return new TransferCalculateDTO(
-                TransferCoin, toMarketSellDto.getAmounts().get(transferCoin),
+                transferCoin, toMarketSellDto.getAmounts().get(transferCoin),
                 fromMarketBuyDto.getOrderBooks().get(transferCoin),
                 toMarketSellDto.getOrderBooks().get(transferCoin)
-        )
+        );*/
+        return null;
     }
 }

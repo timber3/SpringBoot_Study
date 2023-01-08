@@ -21,6 +21,6 @@ public class TransferCalculateResponseView {
                 dto.getAmount(),
                 dto.getBuyOrderBook(),
                 dto.getSellOrderBook()
-        )
+        );
     }
 }
