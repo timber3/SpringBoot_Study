@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,5 +43,24 @@ class CommonMarketServiceTest {
         assertEquals(testAmount, commonMarketService.getPrice("upbit", testCoin));
 
     }
+    @Test
+    void getMarketServiceTest()
+    {
+        // given :
+        Map<String, MarketService> marketServices = new HashMap<>();
+        marketServices.put("bithumbMarketService", bithumbMarketService);
+        marketServices.put("upbitMarketService", upbitMarketService);
+
+        // when : getMarketService 메소드를 실행했을 때
+        // then : bithumbMarketService 와 메소드의 리턴값이 같은 결과가 나오는가?
+        assertEquals(bithumbMarketService, CommonMarketService.getMarketService(marketServices, "bithumb");
+        assertEquals(bithumbMarketService, CommonMarketService.getMarketService(marketServices, "BithumB");
+        assertEquals(bithumbMarketService, CommonMarketService.getMarketService(marketServices, "upbit");
+        assertEquals(bithumbMarketService, CommonMarketService.getMarketService(marketServices, "UpbiT");
+
+
+
+    }
+
 
 }
