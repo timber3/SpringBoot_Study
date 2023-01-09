@@ -53,10 +53,10 @@ class CommonMarketServiceTest {
 
         // when : getMarketService 메소드를 실행했을 때
         // then : bithumbMarketService 와 메소드의 리턴값이 같은 결과가 나오는가?
-        assertEquals(bithumbMarketService, CommonMarketService.getMarketService(marketServices, "bithumb");
-        assertEquals(bithumbMarketService, CommonMarketService.getMarketService(marketServices, "BithumB");
-        assertEquals(bithumbMarketService, CommonMarketService.getMarketService(marketServices, "upbit");
-        assertEquals(bithumbMarketService, CommonMarketService.getMarketService(marketServices, "UpbiT");
+        assertEquals(bithumbMarketService, CommonMarketService.getMarketService(marketServices, "bithumb"));
+        assertEquals(bithumbMarketService, CommonMarketService.getMarketService(marketServices, "BithumB"));
+        assertEquals(bithumbMarketService, CommonMarketService.getMarketService(marketServices, "upbit"));
+        assertEquals(bithumbMarketService, CommonMarketService.getMarketService(marketServices, "UpbiT"));
 
 
 
