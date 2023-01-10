@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,11 @@ public class BithumbMarketService implements MarketService{
 
     public CoinBuyDTO calculateBuy(List<String> commonCoins, double amount)
     {
+        // 살 코인의 양
+        Map<String, Double> amounts = new HashMap<>();
+        // 해당 코인마다의 호가창 정보
+        Map<String, Map<Double, Double>> orderBooks = new HashMap<>();
+
         // feign 으로 orderbook 가져오기
         Map<String, Object> bithumbResponse = bithumbFeignClient.getOrderBook().getData();
 
@@ -55,6 +61,7 @@ public class BithumbMarketService implements MarketService{
                 double availableCoin = 0;
 
                 String coin = k;
+                Map<Double, Double> eachOrderBook = new HashMap<>();
                 List<Map<String, String>> wannaSell =
                         (List<Map<String, String>>)((Map<String, Object>) v).get("asks");
 
@@ -66,20 +73,29 @@ public class BithumbMarketService implements MarketService{
                     Double eachTotalPrice = price * quantity;
                     Double buyableCoinAmount = availableCurrency / price;
 
-                    // 이체금액 > X : 다음 스텝
+
                     // 이체금액 <= X : 현재 호가창에서 가장 싼 가격에 살 수 있는만큼 사고 종료
                     if (availableCurrency <= eachTotalPrice) {
                         availableCoin += buyableCoinAmount;
                         // 살 수 있는 호가창에 추가하기
                         eachOrderBook.put(price, buyableCoinAmount);
-
+                        availableCurrency = 0;
+                        break;
                     }
-
+                    // 이체금액 > X : 다음 스텝
+                    else {
+                        availableCoin += quantity;
+                        eachOrderBook.put(price, quantity);
+                        availableCurrency -= eachTotalPrice;
+                    }
                 }
+                amounts.put(coin, availableCoin);
 
-
+                orderBooks.put(coin,eachOrderBook);
             }
         });
+
+        return new CoinBuyDTO(amounts, orderBooks);
     }
 
     public CoinSellDTO calculateBuy(CoinBuyDTO buyDTO)
