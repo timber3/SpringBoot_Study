@@ -18,7 +18,7 @@ public class TransferCalculateService {
             String fromMarket, String toMarket, Double amount
     )
     {
-/*        // from 과 to 의 common coin 찾기
+ /*      // from 과 to 의 common coin 찾기
         List<String> commonCoins = commonMarketService.getCommonCoin(fromMarket, toMarket);
 
         MarketService fromMarketService = CommonMarketService.getCommonCoins(marketServices, fromMarket);
@@ -32,7 +32,7 @@ public class TransferCalculateService {
         Map<String , Double> fromMarketTransferFee = fromMarketService.calculateFee(commonCoins, amount);
 
         // to에서 얼마에 파는지
-        CoinSellDTO toMarketSellDto = toMarketService.calculateSell(commonCoins, amount);
+        CoinSellDTO toMarketSellDto = toMarketService.calculateSell(fromMarketBuyDto);
 
 
         // 가장 높은 값을 받을 수 있는 코인을 선택하기.
@@ -43,7 +43,8 @@ public class TransferCalculateService {
                 transferCoin, toMarketSellDto.getAmounts().get(transferCoin),
                 fromMarketBuyDto.getOrderBooks().get(transferCoin),
                 toMarketSellDto.getOrderBooks().get(transferCoin)
-        );*/
+        );
+*/
         return null;
     }
 }

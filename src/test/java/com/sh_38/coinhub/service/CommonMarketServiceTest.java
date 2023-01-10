@@ -6,7 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,7 +60,22 @@ class CommonMarketServiceTest {
         assertEquals(upbitMarketService, CommonMarketService.getMarketService(marketServices, "upbit"));
         assertEquals(upbitMarketService, CommonMarketService.getMarketService(marketServices, "UpbiT"));
 
+    }
 
+    @Test
+    void getCommonCoinTest()
+    {
+        // given:
+        String testFromMarket = "TFM";
+        String testToMarket = "TTM";
+        List<String> testList = List.of("BTC" , "ETH", "BORA");
+        when(commonMarketService.getCommonCoin(testFromMarket, testToMarket)).thenReturn(testList);
+        when(commonMarketService.getCommonCoin(testToMarket, testFromMarket)).thenReturn(testList);
+
+        // when :
+        // then :
+        assertEquals(testList, commonMarketService.getCommonCoin(testFromMarket, testToMarket));
+        assertEquals(testList, commonMarketService.getCommonCoin(testToMarket, testFromMarket));
 
     }
 
