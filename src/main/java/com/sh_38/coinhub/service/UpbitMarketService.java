@@ -1,5 +1,7 @@
 package com.sh_38.coinhub.service;
 
+import com.sh_38.coinhub.dto.CoinBuyDTO;
+import com.sh_38.coinhub.dto.CoinSellDTO;
 import com.sh_38.coinhub.feign.UpbitFeignClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +43,15 @@ public class UpbitMarketService implements MarketService{
         });
 
         return result;
+    }
+
+    public CoinBuyDTO calculateBuy(List<String> commonCoins, double amount)
+    {
+        return null;
+    }
+
+    public CoinSellDTO calculateSell(CoinBuyDTO buyDTO)
+    {
+        return null;
     }
 }

@@ -57,7 +57,7 @@ public class BithumbMarketService implements MarketService{
             {
                 // 내가 이체할 현금
                 double availableCurrency = amount;
-                // 현재 갖고있는 코인의 개수
+                // 현재 살 코인의 개수
                 double availableCoin = 0;
 
                 String coin = k;
@@ -89,16 +89,21 @@ public class BithumbMarketService implements MarketService{
                         availableCurrency -= eachTotalPrice;
                     }
                 }
-                amounts.put(coin, availableCoin);
 
-                orderBooks.put(coin,eachOrderBook);
+                if(availableCurrency == 0)
+                {
+                    amounts.put(coin, availableCoin);
+                    orderBooks.put(coin,eachOrderBook);
+                }
+
+
             }
         });
 
         return new CoinBuyDTO(amounts, orderBooks);
     }
 
-    public CoinSellDTO calculateBuy(CoinBuyDTO buyDTO)
+    public CoinSellDTO calculateSell(CoinBuyDTO buyDTO)
     {
         return null;
     }
