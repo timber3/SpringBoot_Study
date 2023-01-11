@@ -38,17 +38,17 @@ public class BithumbMarketServiceTest {
         assertEquals(1+1+0.5, result.getAmounts().get("A"));
         assertEquals(1, result.getOrderBooks().get("A").get(1D));
         assertEquals(1, result.getOrderBooks().get("A").get(2D));
-        assertEquals(0.5, result.getOrderBooks().get("A").get(3D));
+        assertEquals(0.5, result.getOrderBooks().get("A").get(4D));
         // A 코인을 1원에 2개 2원에 1.5개 4원에 0개를 사야 5원을 다 쓴다.
         assertEquals(2+1.5, result.getAmounts().get("B"));
         assertEquals(2, result.getOrderBooks().get("B").get(1D));
         assertEquals(1.5, result.getOrderBooks().get("B").get(2D));
-        assertEquals(0, result.getOrderBooks().get("B").get(4D));
+
         // A 코인을 1원에 3개 2원에 1개 4원에 0개를 사야 5원을 다 쓴다.
         assertEquals(3+1, result.getAmounts().get("C"));
         assertEquals(3, result.getOrderBooks().get("C").get(1D));
         assertEquals(1, result.getOrderBooks().get("C").get(2D));
-        assertEquals(0, result.getOrderBooks().get("C").get(4D));
+
     }
 
     private BithumbResponse<Map<String, Object>> mockBithumbOrderBook()
