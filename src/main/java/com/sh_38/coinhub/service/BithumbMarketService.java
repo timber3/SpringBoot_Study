@@ -4,8 +4,15 @@ import com.sh_38.coinhub.dto.CoinBuyDTO;
 import com.sh_38.coinhub.dto.CoinSellDTO;
 import com.sh_38.coinhub.feign.BithumbFeignClient;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +23,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BithumbMarketService implements MarketService{
     private final BithumbFeignClient bithumbFeignClient;
+    @Value("${feeUrl.bithumb}")
+    private String feeUrl;
     @Override
     public double getCoinCurrentPrice(String coin) {
         return Double.parseDouble(
@@ -108,5 +117,26 @@ public class BithumbMarketService implements MarketService{
         return null;
     }
 
+    public Map<String /* Coin name */ , Double /* Withdraw Fee */> calculateFee() throws Exception
+    {
+        Map<String, Double> result = new HashMap<>();
+        // 만약에 빗썸 페이지가 개편되서 주소가 달라진다면 수정해줘야 하는데
+        // 이런 데이터들은 yml 파일에 한군데로 모아둔다.
+        Document doc = Jsoup.connect(feeUrl).timeout(10000).get();
+
+        //table.fee_inout tbody tr
+
+        Elements elements = doc.select("table.fee_in_out tbody tr");
+
+        for(Element element: elements) {
+            String coinHtml = element.select("td.money_type.tx_c").html();
+
+            String coinFeeHtml = element.select("div.out_fee").html();
+
+            result.put(coinHtml, Double.parseDouble(coinFeeHtml));
+        }
+
+        return result;
+    }
 
 }
