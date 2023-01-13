@@ -122,7 +122,7 @@ public class BithumbMarketService implements MarketService{
         Map<String, Double> result = new HashMap<>();
         // 만약에 빗썸 페이지가 개편되서 주소가 달라진다면 수정해줘야 하는데
         // 이런 데이터들은 yml 파일에 한군데로 모아둔다.
-        Document doc = Jsoup.connect(feeUrl).timeout(10000).get();
+        Document doc = Jsoup.connect(feeUrl).timeout(30000).get();
 
         //table.fee_inout tbody tr
 
@@ -130,8 +130,22 @@ public class BithumbMarketService implements MarketService{
 
         for(Element element: elements) {
             String coinHtml = element.select("td.money_type.tx_c").html();
+            if(!coinHtml.contains("("))
+            {
+                continue;
+            }
+            coinHtml.substring(coinHtml.indexOf("(") + 1, coinHtml.indexOf(")"))
 
             String coinFeeHtml = element.select("div.out_fee").html();
+            if (coinFeeHtml.isEmpty())
+            {
+                continue;
+            }
+            if(coinFeeHtml.equals("-"))
+            {
+                coinFeeHtml = "0";
+            }
+
 
             result.put(coinHtml, Double.parseDouble(coinFeeHtml));
         }
