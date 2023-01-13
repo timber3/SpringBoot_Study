@@ -2,4 +2,4 @@ server:
   port: 1234
 
 feeURL:
-  bithumb: "https://www.bithumb.com/customer_support/info_fee"
+  bithumb: https://www.bithumb.com/customer_support/info_fee
