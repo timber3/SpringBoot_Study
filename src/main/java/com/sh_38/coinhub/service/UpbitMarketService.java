@@ -2,7 +2,9 @@ package com.sh_38.coinhub.service;
 
 import com.sh_38.coinhub.dto.CoinBuyDTO;
 import com.sh_38.coinhub.dto.CoinSellDTO;
+import com.sh_38.coinhub.feign.UpbitFeeFeignClient;
 import com.sh_38.coinhub.feign.UpbitFeignClient;
+import com.sh_38.coinhub.model.UpbitEachWithdrawFee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,12 +12,15 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UpbitMarketService implements MarketService{
 
     private final UpbitFeignClient upbitFeignClient;
+
+    private final UpbitFeeFeignClient upbitFeeFeignClient;
 
     @Override
     public double getCoinCurrentPrice(String coin) {
@@ -58,6 +63,14 @@ public class UpbitMarketService implements MarketService{
 
     public Map<String /* Coin name */ , Double /* Withdraw Fee */> calculateFee() throws Exception
     {
-        return null;
+        return upbitFeeFeignClient.getWithdrawFee().getData()
+                .stream()
+                .collect(Collectors.toMap(
+                        // key값으로 무엇을 가져올 것인지?
+                        /*k -> k.getCurrency(),
+                        k -> k.getWithdrawFee()*/
+                        UpbitEachWithdrawFee::getCurrency,
+                        UpbitEachWithdrawFee::getWithdrawFee
+                ));
     }
 }
