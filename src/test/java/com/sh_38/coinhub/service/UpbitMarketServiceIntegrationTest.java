@@ -10,8 +10,8 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 //@Disabled
-@SpringBootTest
 @EnableFeignClients
+@SpringBootTest
 public class UpbitMarketServiceIntegrationTest {
 
     @Autowired

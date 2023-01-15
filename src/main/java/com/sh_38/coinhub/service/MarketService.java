@@ -16,7 +16,4 @@ public interface MarketService {
     CoinSellDTO calculateSell(CoinBuyDTO buyDTO);
 
     Map<String /* Coin name */ , Double /* Withdraw Fee */> calculateFee() throws Exception;
-
-
-
 }

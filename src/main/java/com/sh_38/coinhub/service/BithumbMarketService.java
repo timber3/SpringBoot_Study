@@ -23,7 +23,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BithumbMarketService implements MarketService{
     private final BithumbFeignClient bithumbFeignClient;
-    @Value("${feeURL.bithumb}")
+    @Value("${feeUrl.bithumb}")
     private String feeUrl;
     @Override
     public double getCoinCurrentPrice(String coin) {
