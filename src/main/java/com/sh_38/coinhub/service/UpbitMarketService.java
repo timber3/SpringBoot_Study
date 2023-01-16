@@ -4,25 +4,20 @@ import com.sh_38.coinhub.dto.CoinBuyDTO;
 import com.sh_38.coinhub.dto.CoinSellDTO;
 import com.sh_38.coinhub.feign.UpbitFeeFeignClient;
 import com.sh_38.coinhub.feign.UpbitFeignClient;
-import com.sh_38.coinhub.model.UpbitEachWithdrawFee;
+import com.sh_38.coinhub.model.UpbitEachWithdrawalFee;
 import com.sh_38.coinhub.model.UpbitOrderBooks;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UpbitMarketService implements MarketService{
-
+public class UpbitMarketService{
     private final UpbitFeignClient upbitFeignClient;
-
     private final UpbitFeeFeignClient upbitFeeFeignClient;
+
 
     public double getCoinCurrentPrice(String coin) {
         // coin은 대소문자 구분이 안되기 때문에 대문자로 만들어줌
@@ -92,6 +87,7 @@ public class UpbitMarketService implements MarketService{
         });
 
         return new CoinBuyDTO(amounts, orderBooks);
+
     }
 
     public CoinSellDTO calculateSell(CoinBuyDTO buyDTO) {
@@ -138,16 +134,19 @@ public class UpbitMarketService implements MarketService{
         return new CoinSellDTO(amounts, orderBooks);
     }
 
-    public Map<String /* Coin name */ , Double /* Withdraw Fee */> calculateFee() throws Exception
+    // coin name, withdral fee
+    public Map<String, Double> calculateFee() throws Exception
     {
-        return upbitFeeFeignClient.getWithdrawFee().getData()
+        return upbitFeeFeignClient.getWithdrawalFee().getData()
                 .stream()
                 .collect(Collectors.toMap(
                         // key값으로 무엇을 가져올 것인지?
-                        /*k -> k.getCurrency(),
-                        k -> k.getWithdrawFee()*/
-                        UpbitEachWithdrawFee::getCurrency,
-                        UpbitEachWithdrawFee::getWithdrawFee
+                        //k -> k.getCurrency(),
+                        //k -> k.getWithdrawFee()
+
+                        UpbitEachWithdrawalFee::getCurrency,
+                        UpbitEachWithdrawalFee::getWithdrawFee
                 ));
     }
+
 }

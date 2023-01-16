@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BithumbOrderBooks {
-    private int withdraw_status;
+    private int withdrawal_status;
     private int deposit_status;
 }

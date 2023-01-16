@@ -25,10 +25,11 @@ class CommonMarketServiceTest {
     private CommonMarketService commonMarketService;
 
     @BeforeEach
-    void setup() {
+    void setUp() {
         commonMarketService = new CommonMarketService(
                 Map.of("bithumbMarketService", bithumbMarketService,
-                        "upbitMarketService", upbitMarketService));
+                        "upbitMarketService", upbitMarketService)
+        );
     }
     @Test
     void getPriceTest() {

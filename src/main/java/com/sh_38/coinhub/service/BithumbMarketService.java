@@ -19,13 +19,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @Service
 @RequiredArgsConstructor
 public class BithumbMarketService implements MarketService{
     private final BithumbFeignClient bithumbFeignClient;
+
     @Value("${feeUrl.bithumb}")
-    private String feeUrl;
-    @Override
+    private String feeURL;
+
     public double getCoinCurrentPrice(String coin) {
         return Double.parseDouble(
                 bithumbFeignClient.getCoinPrice(coin.toUpperCase() + "_KRW")
@@ -114,15 +116,53 @@ public class BithumbMarketService implements MarketService{
 
     public CoinSellDTO calculateSell(CoinBuyDTO buyDTO)
     {
-        return null;
+        Map<String, Double> sellingAmounts = buyDTO.getAmounts();
+        Map<String, Double> amounts = new HashMap<>();
+        Map<String, Map<Double, Double>> orderBooks = new HashMap<>();
+
+        Map<String, Object> bithumbResponse = bithumbFeignClient.getOrderBook().getData();
+        bithumbResponse.forEach((k,v) -> {
+            if(!(k.equalsIgnoreCase("timestamp") || k.equalsIgnoreCase("payment_currency"))) {
+                String coin = k;
+                double sellCurrency = 0;
+                Double availableCoin = sellingAmounts.get(coin);
+                if(availableCoin != null) {
+                    Map<Double, Double> eachOrderBook = new HashMap<>();
+                    List<Map<String, String>> wannaBuy = (List<Map<String, String>> )((Map<String, Object>)v).get("bids");
+                    for(int i=0; i<wannaBuy.size(); i++) {
+                        Double price = Double.parseDouble(wannaBuy.get(i).get("price"));
+                        Double quantity = Double.parseDouble(wannaBuy.get(i).get("quantity"));
+                        Double eachTotalPrice = price * quantity;
+
+                        // 만약 코인 양 더 많으면 끝내기
+                        if(quantity >= availableCoin) { // 못넘어갈경우
+                            sellCurrency += price * availableCoin;
+                            eachOrderBook.put(price, availableCoin);
+                            availableCoin = 0D;
+                            break;
+                        } else { // 다음 스텝 넘어갈경우
+                            sellCurrency += eachTotalPrice;
+                            eachOrderBook.put(price, quantity);
+                            availableCoin -= quantity;
+                        }
+                    }
+                    // 모두 팔지 못했을때 조건 추가 > 넣지 말기
+                    if(availableCoin == 0) {
+                        amounts.put(coin, sellCurrency);
+                        orderBooks.put(coin, eachOrderBook);
+                    }
+                }
+            }
+        });
+        return new CoinSellDTO(amounts, orderBooks);
     }
 
-    public Map<String /* Coin name */ , Double /* Withdraw Fee */> calculateFee() throws Exception
+    public Map<String, Double> calculateFee() throws Exception
     {
         Map<String, Double> result = new HashMap<>();
         // 만약에 빗썸 페이지가 개편되서 주소가 달라진다면 수정해줘야 하는데
         // 이런 데이터들은 yml 파일에 한군데로 모아둔다.
-        Document doc = Jsoup.connect(feeUrl).timeout(30000).get();
+        Document doc = Jsoup.connect(feeURL).timeout(30000).get();
 
         //table.fee_inout tbody tr
 

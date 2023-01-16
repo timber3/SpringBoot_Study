@@ -4,6 +4,7 @@ import com.sh_38.coinhub.feign.response.BithumbResponse;
 import com.sh_38.coinhub.model.BithumbAssetEachStatus;
 import com.sh_38.coinhub.model.BithumbCoinPrice;
 import com.sh_38.coinhub.model.UpbitCoinPrice;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,3 +25,5 @@ public interface BithumbFeignClient {
     BithumbResponse<Map<String, Object>> getOrderBook();
 
 }
+
+

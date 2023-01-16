@@ -8,12 +8,8 @@ import java.util.Map;
 
 public interface MarketService {
     double getCoinCurrentPrice(String coin);
-
     List<String> getCoins();
-
     CoinBuyDTO calculateBuy(List<String> commonCoins, double amount);
-
     CoinSellDTO calculateSell(CoinBuyDTO buyDTO);
-
-    Map<String /* Coin name */ , Double /* Withdraw Fee */> calculateFee() throws Exception;
+    Map<String /*Coin Name*/ , Double/* Withdrawal Fee */> calculateFee() throws Exception;
 }

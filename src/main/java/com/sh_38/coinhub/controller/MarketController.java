@@ -42,3 +42,5 @@ public class MarketController {
         return commonMarketService.getCommonCoin(market1, market2);
     }
 }
+
+

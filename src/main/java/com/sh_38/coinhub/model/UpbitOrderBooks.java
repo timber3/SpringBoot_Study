@@ -8,11 +8,6 @@ import java.util.List;
 @Getter
 @Setter
 public class UpbitOrderBooks {
-    private String market;
-    private String timestamp;
-    private String total_ask_size;
-    private String total_bid_size;
-    private List<UpbitEachOrderBooks> orderbook_units;
 
     @Getter
     @Setter
@@ -23,5 +18,11 @@ public class UpbitOrderBooks {
         private double ask_size;
         private double bid_size;
     }
+
+    private String market;
+    private String timestamp;
+    private String total_ask_size;
+    private String total_bid_size;
+    private List<UpbitEachOrderBooks> orderbook_units;
 
 }

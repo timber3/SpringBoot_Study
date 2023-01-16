@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.util.Map;
 
+/*
 @Getter
 @AllArgsConstructor
 public class TransferCalculateDTO {
@@ -18,4 +19,14 @@ public class TransferCalculateDTO {
     private Map<Double, Double> buyOrderBook;
     private Map<Double, Double> sellOrderBook;
 
+}
+*/
+
+@Getter
+@AllArgsConstructor
+public class TransferCalculateDTO {
+    private String coin;
+    private double amount;
+    private Map<Double, Double> buyOrderBook;
+    private Map<Double, Double> sellOrderBook;
 }

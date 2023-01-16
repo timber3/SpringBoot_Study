@@ -19,6 +19,7 @@ public class UpbitMarketServiceIntegrationTest {
 
 
     @Test
+
     void caculateFeeTest() throws Exception {
         Map<String, Double> result = upbitMarketService.calculateFee();
         // 받아 와 지나? 확인하는 용도

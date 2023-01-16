@@ -14,8 +14,9 @@ public class TransferCalculateResponseView {
     private Map<Double, Double> buyOrderBook;
     private Map<Double, Double> sellOrderBook;
 
-    // DTO를 View 로 전환해주는 작업
-    public static TransferCalculateResponseView of(TransferCalculateDTO dto){
+    // DTO -> View
+
+    public static TransferCalculateResponseView of(TransferCalculateDTO dto) {
         return new TransferCalculateResponseView(
                 dto.getCoin(),
                 dto.getAmount(),
