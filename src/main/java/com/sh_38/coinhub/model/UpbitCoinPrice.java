@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpbitCoinPrice{
+public class UpbitCoinPrice {
     private double trade_price;
 }

@@ -19,4 +19,5 @@ public class UpbitWithdrawalFee {
     public List<UpbitEachWithdrawalFee> getData() throws IOException {
         return mapper.readValue(data, new TypeReference<>() {});
     }
+
 }

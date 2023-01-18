@@ -15,7 +15,6 @@ public class TransferCalculateResponseView {
     private Map<Double, Double> sellOrderBook;
 
     // DTO -> View
-
     public static TransferCalculateResponseView of(TransferCalculateDTO dto) {
         return new TransferCalculateResponseView(
                 dto.getCoin(),

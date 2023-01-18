@@ -1,5 +1,6 @@
 package com.sh_38.coinhub.service;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,22 +10,16 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-//@Disabled
+@Disabled
 @EnableFeignClients
 @SpringBootTest
-public class UpbitMarketServiceIntegrationTest {
-
+class BithumbMarketServiceIntegerationTest {
     @Autowired
-    private UpbitMarketService upbitMarketService;
-
+    private BithumbMarketService bithumbMarketService;
 
     @Test
-
-    void caculateFeeTest() throws Exception {
-        Map<String, Double> result = upbitMarketService.calculateFee();
-        // 받아 와 지나? 확인하는 용도
+    void calculateFeeTest() throws Exception {
+        Map<String, Double> result = bithumbMarketService.calculateFee();
         assertFalse(result.isEmpty());
     }
-
-
 }

@@ -8,5 +8,5 @@ import lombok.Setter;
 public class UpbitEachWithdrawalFee {
     private String currency;
     private Double withdrawFee;
-
+    
 }
