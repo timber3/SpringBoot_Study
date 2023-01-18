@@ -11,10 +11,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +43,8 @@ public class BithumbMarketService implements MarketService {
 
     public CoinBuyDTO calculateBuy(List<String> commonCoins, double amount) {
         Map<String, Double> amounts = new HashMap<>();
-        Map<String, Map<Double, Double>> orderBooks = new HashMap<>();
+        // Buy 할때는 가격이 싼 코인부터 구매해서
+        Map<String, SortedMap<Double, Double>> orderBooks = new HashMap<>();
 
         // Feign으로 orderbook 가져오기
         Map<String, Object> bithumbResponse = bithumbFeignClient.getOrderBook().getData();
@@ -58,9 +56,19 @@ public class BithumbMarketService implements MarketService {
                 double availableCoin = 0;
 
                 String coin = k;
-                Map<Double, Double> eachOrderBook = new HashMap<>();
+                SortedMap<Double, Double> eachOrderBook = new TreeMap<>();
                 List<Map<String, String>> wannaSell =
                         (List<Map<String, String>>)((Map<String, Object>) v).get("asks");
+
+                // sort 메소드는 Comparator 가 필요하다 (비교연산자 오버라이딩), 오름차순
+                wannaSell.sort( (k1, k2) -> {
+                    if ( Double.parseDouble(k1.get("price")) > Double.parseDouble(k2.get("price"))) return 1;
+                    return -1;
+                });
+
+                //wannaSell.sort(Comparator.comparingDouble(k1 -> Double.parseDouble(k1.get("price"))));
+
+
 
                 for(int i=0; i<wannaSell.size(); i++) {
                     Double price = Double.parseDouble(wannaSell.get(i).get("price"));
@@ -96,7 +104,7 @@ public class BithumbMarketService implements MarketService {
     public CoinSellDTO calculateSell(CoinBuyDTO buyDTO) {
         Map<String, Double> sellingAmounts = buyDTO.getAmounts();
         Map<String, Double> amounts = new HashMap<>();
-        Map<String, Map<Double, Double>> orderBooks = new HashMap<>();
+        Map<String, SortedMap<Double, Double>> orderBooks = new HashMap<>();
 
         Map<String, Object> bithumbResponse = bithumbFeignClient.getOrderBook().getData();
         bithumbResponse.forEach((k,v) -> {
@@ -105,8 +113,17 @@ public class BithumbMarketService implements MarketService {
                 double sellCurrency = 0;
                 Double availableCoin = sellingAmounts.get(coin);
                 if(availableCoin != null) {
-                    Map<Double, Double> eachOrderBook = new HashMap<>();
+                    SortedMap<Double, Double> eachOrderBook = new TreeMap<>(Comparator.reverseOrder());
                     List<Map<String, String>> wannaBuy = (List<Map<String, String>> )((Map<String, Object>)v).get("bids");
+
+                    // 내림차순으로 정렬
+                    wannaBuy.sort( (k1, k2) -> {
+                        if ( Double.parseDouble(k1.get("price")) < Double.parseDouble(k2.get("price"))) return 1;
+                        return -1;
+                    });
+
+                    //wannaBuy.sort(Comparator.comparingDouble(k1 -> Double.parseDouble(((Map<String, String>)k1).get("price")))).reversed();
+
                     for(int i=0; i<wannaBuy.size(); i++) {
                         Double price = Double.parseDouble(wannaBuy.get(i).get("price"));
                         Double quantity = Double.parseDouble(wannaBuy.get(i).get("quantity"));
