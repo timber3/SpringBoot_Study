@@ -10,7 +10,9 @@ import java.util.Map;
 @AllArgsConstructor
 public class TransferCalculateResponseView {
     private String coin;
-    private double amount;
+    private double buyamount;
+    private double fee;
+    private double sellamount;
     private Map<Double, Double> buyOrderBook;
     private Map<Double, Double> sellOrderBook;
 
@@ -18,7 +20,9 @@ public class TransferCalculateResponseView {
     public static TransferCalculateResponseView of(TransferCalculateDTO dto) {
         return new TransferCalculateResponseView(
                 dto.getCoin(),
-                dto.getAmount(),
+                dto.getBuyAmount(),
+                dto.getFee(),
+                dto.getSellAmount(),
                 dto.getBuyOrderBook(),
                 dto.getSellOrderBook()
         );

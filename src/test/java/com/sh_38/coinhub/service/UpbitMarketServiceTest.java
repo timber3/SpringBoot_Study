@@ -95,7 +95,7 @@ class UpbitMarketServiceTest {
         when(upbitFeignClient.getOrderBooks(commonCoins)).thenReturn(mockOrderBook);
 
         // when
-        CoinSellDTO result = upbitMarketService.calculateSell(new CoinBuyDTO(amounts, null));
+        CoinSellDTO result = upbitMarketService.calculateSell(amounts);
 
         // then
         assertEquals(4*1 + 2*1 + 1*0.5, result.getAmounts().get("A"));

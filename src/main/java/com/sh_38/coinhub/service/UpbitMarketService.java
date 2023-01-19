@@ -77,8 +77,7 @@ public class UpbitMarketService implements MarketService {
         return new CoinBuyDTO(amounts, orderBooks);
     }
 
-    public CoinSellDTO calculateSell(CoinBuyDTO buyDTO) {
-        Map<String, Double> sellingAmounts = buyDTO.getAmounts();
+    public CoinSellDTO calculateSell(Map<String, Double> sellingAmounts) {
         Map<String, Double> amounts = new HashMap<>();
         Map<String, SortedMap<Double, Double>> orderBooks = new HashMap<>();
         List<String> coins = sellingAmounts.keySet().stream().map(k -> "KRW-" + k.toUpperCase()).toList();
